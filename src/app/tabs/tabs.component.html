@@ -1,6 +1,7 @@
 <div class="tabs-headers">
     <div *ngFor="let tab of tabs" class="tab-header" [class.active]="tab.active" (click)="selectTab(tab)">
         {{ tab.title }}
+        <span class="close" (click)="tab.onClose.emit()">&times;</span>
     </div>
 </div>
 <div class="tabs-content">

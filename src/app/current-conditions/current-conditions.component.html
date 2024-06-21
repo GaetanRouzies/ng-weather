@@ -1,5 +1,6 @@
 <app-tabs *ngIf="currentConditionsByZip().length">
     <app-tab title="{{ currentConditionAndZip.data.name }} ({{ currentConditionAndZip.zip }})"
+             (onClose)="locationService.removeLocation(currentConditionAndZip.zip)"
              *ngFor="let currentConditionAndZip of currentConditionsByZip()"
              (click)="showForecast(currentConditionAndZip.zip)">
         <div class="well flex" style="margin-bottom: 0">
@@ -18,7 +19,6 @@
                 </p>
             </div>
             <div>
-                <span class="close" (click)="locationService.removeLocation(currentConditionAndZip.zip)">&times;</span>
                 <img [src]="weatherService.getWeatherIcon(currentConditionAndZip.data.weather[0].id)">
             </div>
         </div>

@@ -16,6 +16,7 @@ export class WeatherService {
     private currentConditions = signal<ConditionsAndZip[]>([]);
 
     addCurrentConditions(zipcode: string): void {
+        console.log('addCurrentConditions');
         // Here we make a request to get the current conditions data from the API. Note the use of backticks and an expression to insert the zipcode
         this.httpClient.get<CurrentConditions>(`${WeatherService.URL}/weather?zip=${zipcode},us&units=imperial&APPID=${WeatherService.APPID}`)
             .subscribe(data => this.currentConditions.update(conditions => [...conditions, {zip: zipcode, data}]));

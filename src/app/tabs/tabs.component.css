@@ -8,6 +8,8 @@
     cursor: pointer;
     border: 2px solid black;
     border-bottom: none;
+    display: flex;
+    gap: 1rem;
 }
 
 .tabs-headers > .tab-header.active {
