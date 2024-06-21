@@ -1,0 +1,20 @@
+.tabs-headers {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.tabs-headers > .tab-header {
+    padding: 10px;
+    cursor: pointer;
+    border: 2px solid black;
+    border-bottom: none;
+}
+
+.tabs-headers > .tab-header.active {
+    color: white;
+    background-color: cornflowerblue;
+}
+
+.tabs-content {
+    border: 2px solid black;
+}
