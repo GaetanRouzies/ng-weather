@@ -1,4 +1,4 @@
-import {AfterContentInit, Component, ContentChildren, EventEmitter, Output, QueryList} from '@angular/core';
+import {AfterContentChecked, Component, ContentChildren, QueryList} from '@angular/core';
 import {TabComponent} from './tab/tab.component';
 
 @Component({
@@ -6,19 +6,24 @@ import {TabComponent} from './tab/tab.component';
     templateUrl: './tabs.component.html',
     styleUrls: ['./tabs.component.css']
 })
-export class TabsComponent implements AfterContentInit {
+export class TabsComponent implements AfterContentChecked {
     @ContentChildren(TabComponent) tabs: QueryList<TabComponent>;
-
-    ngAfterContentInit() {
-        const activeTab = this.tabs.toArray().find(tab => tab.active) || this.tabs.toArray()[0];
-        setTimeout(() => {
-            this.selectTab(activeTab);
-        });
-    }
 
     selectTab(tab: TabComponent) {
         this.tabs.forEach(tab => tab.active = false);
         tab.active = true;
     }
 
+    ngAfterContentChecked() {
+        this.selectFirstTabIfNoActive();
+    }
+
+    selectFirstTabIfNoActive() {
+        // If no tabs are active, select the first
+        if (this.tabs.toArray().length > 0 && !this.tabs.toArray().some(tab => tab.active)) {
+            setTimeout(() => {
+                this.selectTab(this.tabs.toArray()[0]);
+            });
+        }
+    }
 }
