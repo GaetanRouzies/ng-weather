@@ -3,6 +3,7 @@ import {WeatherService} from '../weather.service';
 import {LocationService} from '../location.service';
 import {Router} from '@angular/router';
 import {ConditionsAndZip} from '../conditions-and-zip.type';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-current-conditions',
@@ -15,6 +16,20 @@ export class CurrentConditionsComponent {
     protected weatherService = inject(WeatherService);
     protected locationService = inject(LocationService);
     protected currentConditionsByZip: Signal<ConditionsAndZip[]> = this.weatherService.getCurrentConditions();
+
+    constructor() {
+        this.locationService.locations.forEach(location => {
+            this.weatherService.addCurrentConditions(location);
+        });
+
+        this.locationService.locationAddedSubject.pipe(takeUntilDestroyed()).subscribe(location => {
+            this.weatherService.addCurrentConditions(location);
+        });
+
+        this.locationService.locationRemovedSubject.pipe(takeUntilDestroyed()).subscribe(location => {
+            this.weatherService.removeCurrentConditions(location);
+        });
+    }
 
     showForecast(zipcode: string) {
         this.router.navigate(['/forecast', zipcode])
